@@ -3,7 +3,6 @@ app = Flask(__name__)
 
 @app.route("/")
 @app.route("/web")
-
 def start():
     return """<!doctype html> \
         <html> \
@@ -11,8 +10,10 @@ def start():
                 <h1>web-сервер на flask</h1>
                 <a href="/author">author</a>
                 <a href="/lab1/oak">Oak</a>
+                <a href="/lab1/counter">counter</a>
             </body>
         </html>"""
+
 
 @app.route("/author")
 def author():
@@ -30,6 +31,7 @@ def author():
             </body>
         </html>"""
 
+
 @app.route("/lab1/oak")
 def oak():
     path = url_for("static", filename = "oak.png")
@@ -39,6 +41,21 @@ def oak():
             <body>
                 <h1>Дуб</h1>
                 <img src="'''+ path +'''">
+                <a href="/web">web</a>
+            </body>
+        </html>
+    '''
+
+count=0
+@app.route('/lab1/counter')
+def counter():
+    global count
+    count +=1
+    return f'''
+    <!doctype>
+        <html>
+            <body>
+                Сколько раз вы сюда заходили:{count}<br>
                 <a href="/web">web</a>
             </body>
         </html>
