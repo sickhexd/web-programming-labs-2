@@ -2,7 +2,7 @@ from flask import Flask, url_for, redirect
 app = Flask(__name__)
 
 @app.route("/")
-@app.route("/web")
+
 def start():
     return """<!doctype html> \
         <html> \
@@ -12,8 +12,22 @@ def start():
                 <a href="/lab1/oak">Oak</a><br>
                 <a href="/lab1/counter">counter</a><br>
                 <a href="/info">info</a><br>
+                <a href="/web">web</a>
             </body>
         </html>"""
+
+@app.route("/web")
+def web():
+    return """<!doctype html> \
+        <html> \
+            <body>
+                <a href="/">start</a>
+            </body>
+        </html>""", 200, {
+            'X-Server': 'sample',
+            'Content-Type': 'text/plain; charset=utf-8'
+        }
+
 
 
 @app.route("/author")
@@ -28,7 +42,7 @@ def author():
                 <p>Студент: """+ name +"""</p>
                 <p>Группа: """+ group +"""</p>
                 <p>Факультет: """+ faculty +"""</p>
-                <a href="/web">web</a>
+                <a href="/">start</a>
             </body>
         </html>"""
 
@@ -42,7 +56,7 @@ def oak():
             <body>
                 <h1>Дуб</h1>
                 <img src="'''+ path +'''">
-                <a href="/web">web</a>
+                <a href="/">start</a>
             </body>
         </html>
     '''
@@ -57,7 +71,7 @@ def counter():
         <html>
             <body>
                 Сколько раз вы сюда заходили:{count}<br>
-                <a href="/web">web</a>
+                <a href="/">start</a>
             </body>
         </html>
     '''
