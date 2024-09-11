@@ -2,10 +2,34 @@ from flask import Flask, url_for, redirect
 app = Flask(__name__)
 
 @app.route("/")
-
 def start():
-    return """<!doctype html> \
-        <html> \
+    return """<!doctype html> 
+        <html> 
+            <head>
+                <title>НГТУ, ФБ, Лабораторные работы</title>
+            </head>
+            <header>
+                НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных<br>
+                Антонов Семен, ФБИ-21
+            </header>
+            <body>
+                <h1>web-сервер на flask</h1>
+                <a href="/lab1">Лабораторная работа 1</a><br>
+                
+            </body>
+        </html>"""
+
+@app.route("/lab1")
+def lab1():
+    return """<!doctype html> 
+        <html> 
+            <head>
+                <title>НГТУ, ФБ, Лабораторные работы</title>
+            </head>
+            <header>
+                НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных<br>
+                Антонов Семен, ФБИ-21
+            </header>
             <body>
                 <h1>web-сервер на flask</h1>
                 <a href="/lab1/author">author</a><br>
@@ -42,7 +66,6 @@ def author():
                 <p>Студент: """+ name +"""</p>
                 <p>Группа: """+ group +"""</p>
                 <p>Факультет: """+ faculty +"""</p>
-                <a href="/">start</a>
             </body>
         </html>"""
 
@@ -59,7 +82,6 @@ def oak():
             <body>
                 <h1>Дуб</h1>
                 <img src="'''+ path +'''">
-                <a href="/">start</a>
             </body>
         </html>
     '''
@@ -74,8 +96,7 @@ def counter():
         <html>
             <body>
                 Сколько раз вы сюда заходили:{count}<br>
-                <a href="/">start</a>
-                <a href="/refresh">refresh</a>
+                <a href="/lab1/refresh">refresh</a>
             </body>
         </html>
     '''
