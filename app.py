@@ -66,3 +66,6 @@ def counter():
 def info():
     return redirect("/author")
 
+@app.errorhandler(404)
+def not_found(err):
+    return "Такой страницы нет", 404
