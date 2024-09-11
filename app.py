@@ -75,6 +75,7 @@ def counter():
             <body>
                 Сколько раз вы сюда заходили:{count}<br>
                 <a href="/">start</a>
+                <a href="/refresh">refresh</a>
             </body>
         </html>
     '''
@@ -82,6 +83,12 @@ def counter():
 @app.route("/info")
 def info():
     return redirect("/author")
+
+@app.route("/refresh")
+def refresh():
+    global count
+    count = 0
+    return redirect("/lab1/counter")
 
 @app.errorhandler(404)
 def not_found(err):
