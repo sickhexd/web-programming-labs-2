@@ -8,15 +8,15 @@ def start():
         <html> \
             <body>
                 <h1>web-сервер на flask</h1>
-                <a href="/author">author</a><br>
+                <a href="/lab1/author">author</a><br>
                 <a href="/lab1/oak">Oak</a><br>
                 <a href="/lab1/counter">counter</a><br>
-                <a href="/info">info</a><br>
-                <a href="/web">web</a>
+                <a href="/lab1/info">info</a><br>
+                <a href="/lab1/web">web</a>
             </body>
         </html>"""
 
-@app.route("/web")
+@app.route("/lab1/web")
 def web():
     return """<!doctype html> \
         <html> \
@@ -30,7 +30,7 @@ def web():
 
 
 
-@app.route("/author")
+@app.route("/lab1/author")
 def author():
     name = "Антонов Семен Андреевич"
     group = "ФБИ-21"
@@ -80,11 +80,11 @@ def counter():
         </html>
     '''
 
-@app.route("/info")
+@app.route("/lab1/info")
 def info():
-    return redirect("/author")
+    return redirect("/lab1/author")
 
-@app.route("/refresh")
+@app.route("/lab1/refresh")
 def refresh():
     global count
     count = 0
