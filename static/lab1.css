@@ -1,3 +1,24 @@
 body{
     background-color: pink;
 }
+
+.error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+h1 {
+    font-size: 4rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.5rem;
+    color: #666;
+    margin-bottom: 2rem;
+}

@@ -113,7 +113,20 @@ def refresh():
 
 @app.errorhandler(404)
 def not_found(err):
-    return "Такой страницы нет", 404
+    return f'''
+    <!DOCTYPE html>
+    <head>
+        <title>404 Error</title>
+        <link rel="stylesheet" href="{url_for('static', filename = "lab1.css")}">
+    </head>
+    <body>
+        <div class="error-container">
+            <h1>Oops! Page not found.</h1>
+            <p>The page you're looking for doesn't exist or has been moved.</p>
+        </div>
+    </body>
+    </html>
+''', 404
 
 @app.route('/lab1/400')
 def bad_request():
