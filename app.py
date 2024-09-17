@@ -175,4 +175,4 @@ def newroute():
         </div>
     </body>
     </html>
-''', 200, {'Content-Language': 'ru-Ru', 'X-api-key': '312fdse2drf2csaDAaw', 'X-more': 'more information'}
+''', 200, {'Content-Language': 'ru-Ru', 'Link': 'https://example.com', 'Info': 'Info'}
