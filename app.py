@@ -157,3 +157,22 @@ def error500(err):
 @app.route('/lab1/500')
 def err_500():
     return 1/0
+
+@app.route('/lab1/newroute')
+def newroute():
+    path = url_for("static", filename = "monk.png")
+    return f'''
+    <!DOCTYPE html>
+    <head>
+        <title>newroute</title>
+        <link rel="stylesheet" href="{url_for('static', filename = "lab1.css")}">
+    </head>
+    <body>
+        <div class="error-container">
+            <h1>Шимпанзе</h1>
+            <p>Шимпанзе́ (лат. Pan) — род из семейства гоминид отряда приматов. К нему относятся два вида: обыкновенный шимпанзе (Pan troglodytes) и карликовый шимпанзе (Pan paniscus), также известный под названием бонобо[2][3]. Оба вида находятся под угрозой вымирания согласно Красной книге МСОП, а в 2017 году Конвенция по сохранению мигрирующих видов диких животных выбрали обыкновенного шимпанзе для особой защиты[4].</p>
+            <img style="width: 50%;" src="'''+ path +'''"> 
+        </div>
+    </body>
+    </html>
+''', 200, {'Content-Language': 'ru-Ru', 'X-api-key': '312fdse2drf2csaDAaw', 'X-more': 'more information'}
