@@ -113,6 +113,7 @@ def refresh():
 
 @app.errorhandler(404)
 def not_found(err):
+    path = url_for("static", filename = "404.png")
     return f'''
     <!DOCTYPE html>
     <head>
@@ -123,6 +124,7 @@ def not_found(err):
         <div class="error-container">
             <h1>Oops! Page not found.</h1>
             <p>The page you're looking for doesn't exist or has been moved.</p>
+            <img src="'''+ path +'''"> 
         </div>
     </body>
     </html>
@@ -148,3 +150,10 @@ def Forbidden():
 def Method_Not_Allowed():
     return "405 Method Not Allowed", 405
 
+@app.errorhandler(500)
+def error500(err):
+    return "Внутренняя ошибка сервера!", 500
+
+@app.route('/lab1/500')
+def err_500():
+    return 1/0
