@@ -114,3 +114,24 @@ def refresh():
 @app.errorhandler(404)
 def not_found(err):
     return "Такой страницы нет", 404
+
+@app.route('/lab1/400')
+def bad_request():
+    return "400 BadRequest!", 400
+
+@app.route('/lab1/401')
+def Unauthorized():
+    return "401 Unauthorized", 401
+
+@app.route('/lab1/402')
+def Payment_Required():
+    return "402 Payment Required", 402
+
+@app.route('/lab1/403')
+def Forbidden():
+    return "403 Forbidden", 403
+
+@app.route('/lab1/405')
+def Method_Not_Allowed():
+    return "405 Method Not Allowed", 405
+
