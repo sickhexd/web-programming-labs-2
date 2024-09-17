@@ -31,12 +31,20 @@ def lab1():
                 Антонов Семен, ФБИ-21
             </header>
             <body>
-                <h1>web-сервер на flask</h1>
-                <a href="/lab1/author">author</a><br>
-                <a href="/lab1/oak">Oak</a><br>
-                <a href="/lab1/counter">counter</a><br>
-                <a href="/lab1/info">info</a><br>
-                <a href="/lab1/web">web</a>
+                <h1>Список роутов</h1>
+                <li><a href="/lab1/author">author</a></li>
+                <li><a href="/lab1/oak">Oak</a></li>
+                <li><a href="/lab1/counter">counter</a></li>
+                <li><a href="/lab1/info">info</a></li>
+                <li><a href="/lab1/web">web</a></li>
+                <li><a href="/lab1/zxc">404</a></li>
+                <li><a href="/lab1/400">400</a></li>
+                <li><a href="/lab1/401">401</a></li>
+                <li><a href="/lab1/402">402</a></li>
+                <li><a href="/lab1/403">403</a></li>
+                <li><a href="/lab1/405">405</a></li>
+                <li><a href="/lab1/500">500</a></li>
+                <li><a href="/lab1/newroute">Monkey</a></li>
             </body>
         </html>"""
 
