@@ -184,3 +184,11 @@ def newroute():
     </body>
     </html>
 ''', 200, {'Content-Language': 'ru-Ru', 'Link': 'https://example.com', 'Info': 'Info'}
+
+@app.route('/lab2/a/')
+def a():
+    return 'со слэшем'
+
+@app.route('/lab2/a')
+def a():
+    return 'без слэша'
