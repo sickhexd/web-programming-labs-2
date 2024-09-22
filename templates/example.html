@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Антонов Семен. Лабораторная работа 2</title>
+    <title>{{name}}. Лабораторная работа 2</title>
     <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
 </head>
 <body>
     <header>
-        WEB-программирование, часть 2. Лабораторная работа {{lb_nubmer}}
+        WEB-программирование, часть 2. {% if lab_num %}Лабораторная работа 2{% endif %}
     </header>
     
     <main>
@@ -20,7 +20,17 @@
     </main>
 
     <footer>
-        &copy; {{name}}, ФБИ-{{group_number}}, {{course_number}} курс, 2024
+        &copy;
+        {% if name %}
+            {{name}},
+            {{group}},
+            {{course}}
+        {% else %}
+            Анонимус,
+            ФБИ-?,
+            XX-
+        {% endif %}
+            курс, 2024
     </footer>
 </body>
 </html>
