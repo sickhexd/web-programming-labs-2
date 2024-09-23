@@ -15,6 +15,7 @@ def start():
             <body>
                 <h1>web-сервер на flask</h1>
                 <a href="/lab1">Лабораторная работа 1</a><br>
+                <a href="/lab2">Лабораторная работа 2</a><br>
                 
             </body>
         </html>"""
