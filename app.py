@@ -1,4 +1,4 @@
-from flask import Flask, url_for, redirect, render_template
+from flask import Flask, url_for, redirect, render_template, abort
 app = Flask(__name__)
 
 @app.route("/")
@@ -200,22 +200,65 @@ def flowers(flower_id):
     if flower_id >= len(flower_list):
         return "Такого цветка нет", 404
     else:
-        return "Цветок: " + flower_list[flower_id]
-
+        flower_name = flower_list[flower_id]
+        return f'''
+        <!doctype html>
+        <html>
+            <body>
+                <h1>Цветок: {flower_name}</h1>
+                <p><a href="/lab2/flowers">Список всех цветков</a></p>
+            </body>
+        </html>
+        '''
+    
+@app.route('/lab2/add_flower/', defaults={'name': None})
 @app.route('/lab2/add_flower/<name>')
 def add_flower(name):
-    flower_list.append(name)
+    if name:
+        flower_list.append(name)
+        return f'''
+    <!doctype html>
+    <html>
+        <body>
+            <h1>Добавлен новый цветок</h1>
+            <p>Название нового цветка: {name}</p>
+            <p>Всего цветков: {len(flower_list)}</p>
+            <p>Полный список: {flower_list}</p>
+        </body>
+    </html>
+    '''
+    else:
+        abort(400, description="Вы не задали имя цветка")
+
+@app.route('/lab2/flowers')
+def all_flowers():
     return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Добавлен новый цветок</h1>
-        <p>Название нового цветка: {name}</p>
-        <p>Всего цветков: {len(flower_list)}</p>
-        <p>Полный список: {flower_list}</p>
-    </body>
-</html>
-'''
+    <!doctype html>
+    <html>
+        <body>
+            <h1>Все цветы</h1>
+            <ul>
+                {''.join(f'<li>{flower}</li>' for flower in flower_list)}
+            </ul>
+            <p>Всего цветков: {len(flower_list)}</p>
+            <p><a href="/lab2/clear_flowers">Очистить список цветов</a></p>
+        </body>
+    </html>
+    '''
+
+@app.route('/lab2/clear_flowers')
+def clear_flowers():
+    flower_list.clear()
+    return f'''
+    <!doctype html>
+    <html>
+        <body>
+            <h1>Список цветов очищен!</h1>
+            <p><a href="/lab2/flowers">Список всех цветков</a></p>
+        </body>
+    </html>
+    '''
+
 
 @app.route('/lab2/example')
 def example():
@@ -244,3 +287,7 @@ def lab2():
 def filters():
     pharse = 'О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
     return render_template('filter.html', pharse=pharse)
+
+@app.errorhandler(400)
+def bad_request(error):
+    return f"<h1>Ошибка 400</h1>", 400
