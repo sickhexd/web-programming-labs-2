@@ -291,3 +291,15 @@ def filters():
 @app.errorhandler(400)
 def bad_request(error):
     return f"<h1>Ошибка 400</h1>", 400
+
+
+@app.route('/lab2/calc/<int:a>/<int:b>')
+def calc(a,b):
+    return f'''
+    <p>Расчет с параметрами:</p>
+    <p>{a} + {b} = {a+b}</p>
+    <p>{a} - {b} = {a-b}</p>
+    <p>{a} x {b} = {a*b}</p>
+    <p>{a} / {b} = {a/b}</p>
+    <p>{a}<sup>{b}</sup> = {a**b}</p>
+'''
