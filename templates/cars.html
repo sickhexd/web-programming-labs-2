@@ -1,0 +1,13 @@
+{% block main %}
+    <h1>Машины</h1>
+    <div>Список машин:</div>
+    
+    {% for i in cars %}
+        <div>
+            <img src="{{ i.img }}" alt="{{ i.name }}" style="width:200px;">
+        </div>
+        <div>{{ loop.index }} - {{ i.name }}</div>
+        <div>{{ i.info }}</div>
+    {% endfor %}
+    
+{% endblock %}
