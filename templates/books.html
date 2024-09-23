@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Книги</h1>
+    <div>Список книг:</div>
+    
+    {% for i in schedule %}
+        <div>{{ loop.index }} - {{ i.author }} , {{ i.name }}, {{ i.genre }}, {{ i.pages }}</div>
+    {% endfor %}
+    
+{% endblock %}
