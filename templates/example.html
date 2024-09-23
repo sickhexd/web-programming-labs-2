@@ -19,7 +19,7 @@
         45<sup>8</sup> = {{45**8}}
         <ul>
             {% for i in fruits %}
-            <li>{{i.name}}: {{i.price}} &#x20bd; </li>
+            <li>{{loop.index}} - {{i.name}}: {{i.price}} &#x20bd; </li>
             {% endfor %}
         </ul>
     </main>
