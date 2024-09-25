@@ -233,19 +233,24 @@ def add_flower(name):
 
 @app.route('/lab2/flowers')
 def all_flowers():
+    flower_items = ""
+    for flower in flower_list:
+        flower_items += f'<li>{flower}</li>'
+        
     return f'''
     <!doctype html>
     <html>
         <body>
             <h1>Все цветы</h1>
             <ul>
-                {''.join(f'<li>{flower}</li>' for flower in flower_list)}
+                {flower_items}
             </ul>
             <p>Всего цветков: {len(flower_list)}</p>
             <p><a href="/lab2/clear_flowers">Очистить список цветов</a></p>
         </body>
     </html>
     '''
+    
 
 @app.route('/lab2/clear_flowers')
 def clear_flowers():
