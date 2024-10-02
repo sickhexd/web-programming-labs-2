@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, render_template, abort
+from flask import Blueprint, url_for, render_template, abort
 lab2 = Blueprint('lab2',__name__)
 
 @lab2.route('/lab2/a/')
@@ -66,7 +66,6 @@ def all_flowers():
     </html>
     '''
     
-
 @lab2.route('/lab2/clear_flowers')
 def clear_flowers():
     flower_list.clear()
@@ -79,7 +78,6 @@ def clear_flowers():
         </body>
     </html>
     '''
-
 
 @lab2.route('/lab2/example')
 def example():
@@ -112,7 +110,6 @@ def filters():
 @lab2.errorhandler(400)
 def bad_request(error):
     return f"<h1>Ошибка 400</h1>", 400
-
 
 @lab2.route('/lab2/calc/<int:a>/<int:b>')
 def calc(a,b):
