@@ -116,3 +116,27 @@ def newroute():
     </body>
     </html>
 ''', 200, {'Content-Language': 'ru-Ru', 'Link': 'https://example.com', 'Info': 'Info'}
+
+@lab1.route('/lab1/400')
+def bad_request():
+    return "400 BadRequest!", 400
+
+@lab1.route('/lab1/401')
+def Unauthorized():
+    return "401 Unauthorized", 401
+
+@lab1.route('/lab1/402')
+def Payment_Required():
+    return "402 Payment Required", 402
+
+@lab1.route('/lab1/403')
+def Forbidden():
+    return "403 Forbidden", 403
+
+@lab1.route('/lab1/405')
+def Method_Not_Allowed():
+    return "405 Method Not Allowed", 405
+
+@lab1.route('/lab1/500')
+def err_500():
+    return 1/0
