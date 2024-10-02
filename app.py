@@ -1,11 +1,12 @@
 from flask import Flask, url_for, redirect, render_template, abort
 from lab1 import lab1
 from lab2 import lab2
-
+from lab3 import lab3
 
 app = Flask(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
+app.register_blueprint(lab3)
 
 @app.route("/")
 def start():
@@ -22,6 +23,7 @@ def start():
                 <h1>web-сервер на flask</h1>
                 <a href="/lab1">Лабораторная работа 1</a><br>
                 <a href="/lab2">Лабораторная работа 2</a><br>
+                <a href="/lab3">Лабораторная работа 3</a><br>
                 
             </body>
         </html>"""
