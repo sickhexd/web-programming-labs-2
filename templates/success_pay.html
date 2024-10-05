@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: 3#}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+    <h1>Чек</h1>
+
+    <div>
+        <p>Ваш заказ успешно оплачен!</p>
+        <p>Вы заказали: 
+            {% if drink == "cofee" %}
+                Кофе
+            {% elif drink == "black-tea" %}
+                Черный чай
+            {% elif drink == "green-tea" %}
+                Зеленый чай
+            {% else %}
+                Неизвестный напиток
+            {% endif %}
+        </p>
+        <p>Стоимость: {{price}} руб.</p>
+    </div>
+
+    <div>
+        <a href="/lab3/order">Сделать новый заказ</a>
+    </div>
+{% endblock %}
