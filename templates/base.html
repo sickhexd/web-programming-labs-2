@@ -9,6 +9,16 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename = '/favicon-32x32.png')}}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename = '/favicon-16x16.png')}}">
     <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            {% if color or background_color or font_size or font_weight %}
+            color: {{ color or '#000000' }};
+            background-color: {{ background_color or '#ffffff' }};
+            font-size: {{ font_size or '16' }}px;
+            font-weight: {{ font_weight or 'normal' }};
+            {% endif %}
+        }
+    </style>
     
 </head>
 <body>
