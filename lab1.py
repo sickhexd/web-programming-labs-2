@@ -59,12 +59,12 @@ def author():
 
 @lab1.route("/lab1/oak")
 def oak():
-    path = url_for("static", filename = "oak.png")
+    path = url_for("static", filename = "lab1/oak.png")
     return f'''
     <!doctype>
         <html>
             <head>
-                <link rel="stylesheet" href="{url_for('static', filename = "lab1.css")}">
+                <link rel="stylesheet" href="{url_for('static', filename = "lab1/lab1.css")}">
             </head>
             <body>
                 <h1>Дуб</h1>
@@ -100,12 +100,12 @@ def refresh():
 
 @lab1.route('/lab1/newroute')
 def newroute():
-    path = url_for("static", filename = "monk.png")
+    path = url_for("static", filename = "lab1/monk.png")
     return f'''
     <!DOCTYPE html>
     <head>
         <title>newroute</title>
-        <link rel="stylesheet" href="{url_for('static', filename = "lab1.css")}">
+        <link rel="stylesheet" href="{url_for('static', filename = "lab1/lab1.css")}">
     </head>
     <body>
         <div class="error-container">

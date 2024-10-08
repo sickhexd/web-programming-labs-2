@@ -93,19 +93,19 @@ def example():
         {'name': 'манго', 'price': 321}
 
     ]
-    return render_template('example.html', name = name, 
+    return render_template('lab2/example.html', name = name, 
                            course = course, 
                            lab_num = lab_num, 
                            group=group, fruits = fruits )
 
 @lab2.route('/lab2/')
 def lab():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 @lab2.route('/lab2/filters')
 def filters():
     pharse = 'О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных...'
-    return render_template('filter.html', pharse=pharse)
+    return render_template('lab2/filter.html', pharse=pharse)
 
 @lab2.errorhandler(400)
 def bad_request(error):
@@ -136,15 +136,15 @@ def books():
         {'author': 'Лю Цисинь ', 'name': 'Удержать небо ', 'genre': 'Рассказы ', 'pages': '223 стр. '},
         {'author': 'Мишель Нолан ', 'name': 'Уничтожить ', 'genre': 'Роман ', 'pages': '543 стр. '}
     ]
-    return render_template('books.html', schedule=schedule)
+    return render_template('lab2/books.html', schedule=schedule)
 
 @lab2.route('/lab2/cars')
 def cars():
-    b1 = url_for('static', filename='b1.jpg')
-    b2 = url_for('static', filename='b2.jpg')
-    b3 = url_for('static', filename='b3.jpg')
-    b4 = url_for('static', filename='b4.jpg')
-    b5 = url_for('static', filename='b5.jpg')
+    b1 = url_for('static', filename='lab2/b1.jpg')
+    b2 = url_for('static', filename='lab2/b2.jpg')
+    b3 = url_for('static', filename='lab2/b3.jpg')
+    b4 = url_for('static', filename='lab2/b4.jpg')
+    b5 = url_for('static', filename='lab2/b5.jpg')
     cars = [
         {'name': 'BWM X1', 'img': b1, 'info': 'BMW X1 отличается ярким спортивным дизайном, высокими динамическими характеристиками и универсальностью — эта модель идеально подходит для приключений.'},
         {'name': 'BWM X2', 'img': b2, 'info': 'BMW X2 — среднеразмерный кроссовер от немецкого автопроизводителя BMW. Автомобиль был представлен в 2016 году в Париже.'},
@@ -152,4 +152,4 @@ def cars():
         {'name': 'BWM X5', 'img': b4, 'info': 'Оснащенный новыми технологиями, обеспечивающими больше безопасности и максимум динамики на любых покрытиях, BMW X5 является безусловным лидером.'},
         {'name': 'BWM X6', 'img': b5, 'info': 'BMW X6 отличается уникальным внешним видом и спортивной динамичностью благодаря мощному двигателю, точно настроенной подвеске и широкой комплектации'}
     ]
-    return render_template('cars.html', cars = cars)
+    return render_template('lab2/cars.html', cars = cars)
