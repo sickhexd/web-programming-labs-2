@@ -103,6 +103,15 @@ def settings():
         font_weight=font_weight))
     return resp
 
+@lab3.route('/lab3/clear_cookies', methods=['POST'])
+def clear_cookies():
+    resp = make_response(redirect('/lab3/settings'))
+    resp.set_cookie('color', '#000000')
+    resp.set_cookie('background_color', '#ffffff')
+    resp.set_cookie('font_size', '16')
+    resp.set_cookie('font_weight', 'normal')
+    return resp
+
 
 @lab3.route('/lab3/ticket', methods=['GET', 'POST'])
 def ticket():
