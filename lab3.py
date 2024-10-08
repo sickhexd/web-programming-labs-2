@@ -12,7 +12,7 @@ def lab():
     if not age:  # если age пустое или None
         age = "Возраст не указан"
     
-    return render_template('lab3.html', name=name,
+    return render_template('lab3/lab3.html', name=name,
                             name_color=name_color, age=age)
 
 @lab3.route('/lab3/cookie')
@@ -45,13 +45,13 @@ def form1():
     user = request.args.get('user')
     age = request.args.get('age')
     sex = request.args.get('sex')
-    return render_template('form1.html', user=user, 
+    return render_template('lab3/form1.html', user=user, 
                            age=age, sex=sex, errors=errors)
 
 
 @lab3.route('/lab3/order')
 def order():
-    return render_template('order.html')
+    return render_template('lab3/order.html')
 
 @lab3.route('/lab3/pay')
 def pay():
@@ -69,13 +69,13 @@ def pay():
     if request.args.get('sugar') == 'on':
         price += 10
     
-    return render_template('pay.html', drink = drink, price = price)
+    return render_template('lab3/pay.html', drink = drink, price = price)
 
 @lab3.route('/lab3/success_pay', methods=['GET'])
 def success_pay():
     drink = request.args.get('drink')
     price = request.args.get('price')
-    return render_template('success_pay.html', drink=drink, price=price)
+    return render_template('lab3/success_pay.html', drink=drink, price=price)
 
 @lab3.route('/lab3/settings', methods=['GET', 'POST'])
 def settings():
@@ -98,7 +98,7 @@ def settings():
     font_weight = request.cookies.get('font_weight', 'normal')
 
     color = request.cookies.get('color')
-    resp = make_response(render_template('settings.html', color=color, background_color=background_color, 
+    resp = make_response(render_template('lab3/settings.html', color=color, background_color=background_color, 
         font_size=font_size, 
         font_weight=font_weight))
     return resp
@@ -155,10 +155,10 @@ def ticket():
                 price += 250
             if safety == 'on':
                 price += 150
-        return render_template('success_ticket.html', name=name, age=age, place=place, 
+        return render_template('lab3/success_ticket.html', name=name, age=age, place=place, 
                                outpoint=outpoint, inpoint=inpoint, 
                                date=date, ticket_type=ticket_type, 
                                price=price)
     
-    return render_template('ticket.html')
+    return render_template('lab3/ticket.html')
 
