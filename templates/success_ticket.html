@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{% block main %}
+
+    <h1>Ваш железнодорожный билет</h1>
+    <p><strong>ФИО пассажира:</strong> {{ name }}</p>
+    <p><strong>Возраст:</strong> {{ age }}</p>
+    <p><strong>Тип билета:</strong> {{ ticket_type }}</p>
+    <p><strong>Полка:</strong> {{ place }}</p>
+    <p><strong>Пункт выезда:</strong> {{ outpoint }}</p>
+    <p><strong>Пункт назначения:</strong> {{ inpoint }}</p>
+    <p><strong>Дата поездки:</strong> {{ date }}</p>
+    <p><strong>Стоимость билета:</strong> {{ price }} руб.</p>
+
+{% endblock %}

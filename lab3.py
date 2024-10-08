@@ -102,3 +102,54 @@ def settings():
         font_size=font_size, 
         font_weight=font_weight))
     return resp
+
+
+@lab3.route('/lab3/ticket', methods=['GET', 'POST'])
+def ticket():
+    if request.method == "POST":
+        name = request.form.get('name')
+        place = request.form.get('place')
+        bele = request.form.get('bele')  
+        bag = request.form.get('bag')  
+        age = request.form.get('age')  
+        outpoint = request.form.get('outpoint') 
+        inpoint = request.form.get('inpoint')  
+        date = request.form.get('date')
+        safety = request.form.get('safety')  
+
+        if int(age) < 1 or int(age) > 120:
+            return 'Incorrect age', 400
+        
+        adult = 1000
+        kid = 700
+        price = 0
+        ticket_type = ''
+        if int(age) >= 18:
+            price += adult
+            ticket_type = 'Взрослый билет'
+            if place in ['нижняя', 'нижняя боковая']:
+                price += 100
+            if bele == 'on':
+                price += 75
+            if bag == 'on':
+                price += 250
+            if safety == 'on':
+                price += 150
+        else:
+            ticket_type = 'Детский билет'
+            price += kid
+            if place in ['нижняя', 'нижняя боковая']:
+                price += 100
+            if bele == 'on':
+                price += 75
+            if bag == 'on':
+                price += 250
+            if safety == 'on':
+                price += 150
+        return render_template('success_ticket.html', name=name, age=age, place=place, 
+                               outpoint=outpoint, inpoint=inpoint, 
+                               date=date, ticket_type=ticket_type, 
+                               price=price)
+    
+    return render_template('ticket.html')
+

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
+
+    <h1>Форма железнодорожного билета</h1>
+    <form method="POST">
+        <label for="name">ФИО пассажира:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="place">Полка:</label><br>
+        <select id="place" name="place" required>
+            <option value="нижняя">Нижняя</option>
+            <option value="верхняя">Верхняя</option>
+            <option value="нижняя боковая">Нижняя боковая</option>
+            <option value="верхняя боковая">Верхняя боковая</option>
+        </select><br><br>
+
+        <label for="bele">С бельём:</label>
+        <input type="checkbox" id="bele" name="bele"><br><br>
+
+        <label for="bag">Едет с багажом:</label>
+        <input type="checkbox" id="bag" name="bag"><br><br>
+
+        <label for="age">Возраст:</label><br>
+        <input type="number" id="age" name="age" min="1" max="120" required><br><br>
+
+        <label for="outpoint">Пункт выезда:</label><br>
+        <input type="text" id="outpoint" name="outpoint" required><br><br>
+
+        <label for="inpoint">Пункт назначения:</label><br>
+        <input type="text" id="inpoint" name="inpoint" required><br><br>
+
+        <label for="date">Дата поездки:</label><br>
+        <input type="date" id="date" name="date" required><br><br>
+
+        <label for="safety">Нужна ли страховка:</label>
+        <input type="checkbox" id="safety" name="safety"><br><br>
+
+        <button type="submit">Отправить</button>
+    </form>
+
+{% endblock %}
