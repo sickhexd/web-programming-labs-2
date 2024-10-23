@@ -49,10 +49,10 @@ def mult():
     x2 = request.form.get('x2')
     if not x1:
         x1 = '1'
-        x1 = int(x1)
+    x1 = int(x1)
     if not x2:
         x2 = '1'
-        x2 = int(x2)
+    x2 = int(x2)
     result = x1 * x2
     return render_template('lab4/mult.html', x1=x1, x2=x2, result=result)
 
@@ -216,7 +216,7 @@ def order_grain():
             price_per_ton = price[order_type]
             total = price_per_ton * weight
             
-            # Применение скидки
+            
             if weight > 50:
                 discount = total * 0.10
                 total -= discount
