@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 4{% endblock %}
+
+{% block main %}
+    <h1>Установка температуры холодильника</h1>
+    <form method="post">
+        <label for="temp">Введите температуру (°C):</label>
+        <input type="number" name="temp" id="temp">
+        <button type="submit">Установить</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% elif result %}
+        <p>{{ result }}</p>
+        {% for i in range(snowflakes) %}
+            <span class="snowflake">*</span>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
