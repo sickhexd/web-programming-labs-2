@@ -49,7 +49,10 @@ def login():
         return render_template('lab5/login.html', error = 'Заполните все поля!')
 
     conn, cur = db_coonect()
-    cur.execute("SELECT login, password FROM users WHERE login=%s;", (login,))
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(f"select login from users where login=%s;", (login))
+    else:
+        cur.execute(f"select login from users where login=?s;", (login))
     user = cur.fetchone()
     if not user:
         cur.close()
@@ -88,16 +91,19 @@ def register():
         return render_template('lab5/register.html', error = 'Заполните все поля!')
     
     conn, cur = db_coonect()
-
-    cur = conn.cursor()
-    cur.execute(f"select login from users where login='{login}';")
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(f"select login from users where login=%s;", (login))
+    else:
+        cur.execute(f"select login from users where login=?s;", (login))
     if cur.fetchone():
         db_close(conn,cur)
         return render_template('lab5/register.html', error='Такой пользователь уже существует')
     
     password_hash = generate_password_hash(password)
-
-    cur.execute(f"insert into users (login, password) values (%s, %s);", (login, password_hash))
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(f"insert into users (login, password) values (%s, %s);", (login, password_hash))
+    else:
+        cur.execute(f"insert into users (login, password) values (?, ?);", (login, password_hash))
     db_close(conn,cur)
     return render_template('lab5/success.html', login=login)
 
@@ -128,7 +134,10 @@ def create():
 
     conn, cur = db_coonect()
 
-    cur.execute('select * from users where login=%s;', (login,))
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute(f"select login from users where login=%s;", (login))
+    else:
+        cur.execute(f"select login from users where login=?s;", (login))
     user_id = cur.fetchone()['id']
 
     cur.execute(f"insert into articles(user_id, title, article_text)\
