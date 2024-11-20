@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+
+    <h1>База знаний</h1>
+    <div style="background-color: rgb(132, 132, 245); padding:5px; display:flex; align-items:center; justify-content:center">
+        <a class="button" href="/lab5/login">Логин</a></li>
+        <a class="button" href="/lab5/register">Регистрация</a></li>
+        <a class="button" href="/lab5/list">Список статей</a></li>
+        <a class="button" href="/lab5/create">Создать статью</a></li>
+        anonymous
+    </div>
+    
+{% endblock %}
