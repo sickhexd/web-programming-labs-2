@@ -1,14 +1,57 @@
 from flask import Blueprint, render_template, request, redirect, session
 import psycopg2
+from psycopg2.extras import RealDictCursor
 lab5 = Blueprint('lab5', __name__)
 
 @lab5.route('/lab5/')
 def lab():
-    return render_template('lab5/lab5.html')
+    return render_template('lab5/lab5.html', login=session.get('login'))
 
-@lab5.route('/lab5/login')
+@lab5.route('/lab5/login', methods = ['get','post'])
 def login():
-    return render_template('lab5/login.html')
+    if request.method == 'get':
+        return render_template('lab5/login.html')
+    login = request.form.get('login')
+    password = request.form.get('password')
+
+    if not (login or password):
+        return render_template('lab5/login.html', error = 'Заполните все поля!')
+
+    conn = psycopg2.connect(
+        host = '127.0.0.1',
+        database = 'antonov_database',
+        user = 'antonov_database',
+        password = '123'
+    )
+    cur = conn.cursor(cursor_factory= RealDictCursor)
+    cur.execute("SELECT login, password FROM users WHERE login=%s;", (login,))
+    user = cur.fetchone()
+    if not user:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
+    
+    if user['password'] != password:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
+
+    session['login'] = login
+    cur.close()
+    conn.close()
+    return render_template('lab5/success_login.html', login=login)
+
+
+
+
+
+
+
+
+
+
+
+
 
 @lab5.route('/lab5/register', methods=['get','post'])
 def register():

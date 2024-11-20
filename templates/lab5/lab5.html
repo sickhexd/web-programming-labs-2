@@ -11,7 +11,11 @@
         <a class="button" href="/lab5/register">Регистрация</a></li>
         <a class="button" href="/lab5/list">Список статей</a></li>
         <a class="button" href="/lab5/create">Создать статью</a></li>
-        anonymous
+        {% if login %}
+            {{login}}
+        {%else%}
+            anonymous
+        {%endif%}
     </div>
     
 {% endblock %}
