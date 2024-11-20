@@ -52,7 +52,7 @@ def login():
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute(f"select login from users where login=%s;", (login))
     else:
-        cur.execute(f"select login from users where login=?s;", (login))
+        cur.execute(f"select login from users where login=?;", (login))
     user = cur.fetchone()
     if not user:
         cur.close()
@@ -94,7 +94,7 @@ def register():
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute(f"select login from users where login=%s;", (login))
     else:
-        cur.execute(f"select login from users where login=?s;", (login))
+        cur.execute(f"select login from users where login=?;", (login))
     if cur.fetchone():
         db_close(conn,cur)
         return render_template('lab5/register.html', error='Такой пользователь уже существует')
@@ -137,7 +137,7 @@ def create():
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute(f"select login from users where login=%s;", (login))
     else:
-        cur.execute(f"select login from users where login=?s;", (login))
+        cur.execute(f"select login from users where login=?;", (login))
     user_id = cur.fetchone()['id']
 
     cur.execute(f"insert into articles(user_id, title, article_text)\
