@@ -96,6 +96,23 @@ def register():
 def list():
     return render_template('lab5/list.html')
 
-@lab5.route('/lab5/create')
+@lab5.route('/lab5/create', methods = ['get','post'])
 def create():
-    return render_template('lab5/create.html')
+    login = session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+    if request.method == 'GET':
+        return render_template('lab5/create_article.html')
+    
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    conn, cur = db_coonect()
+
+    cur.execute('select * from users where login=%s;', (login,))
+    user_id = cur.fetchone()['id']
+
+    cur.execute(f"insert into articles(user_id, title, article_text)\
+                values ({user_id}, '{title}', '{article_text}');")
+    db_close(conn, cur)
+    return redirect("/lab5")
