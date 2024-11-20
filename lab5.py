@@ -87,7 +87,7 @@ def register():
     
     password_hash = generate_password_hash(password)
 
-    cur.execute(f"insert into users (login, password) values ('{login}', '{password_hash}');")
+    cur.execute(f"insert into users (login, password) values (%s, %s);", (login, password_hash))
     db_close(conn,cur)
     return render_template('lab5/success.html', login=login)
 
