@@ -7,6 +7,21 @@ lab5 = Blueprint('lab5', __name__)
 def lab():
     return render_template('lab5/lab5.html', login=session.get('login'))
 
+def db_coonect():
+    conn = psycopg2.connect(
+        host = '127.0.0.1',
+        database = 'antonov_database',
+        user = 'antonov_database',
+        password = '123'
+    )
+    cur = conn.cursor(cursor_factory= RealDictCursor)
+    return conn,cur
+
+def db_close(conn, cur):
+    conn.commit()
+    cur.close()
+    conn.close()
+
 @lab5.route('/lab5/login', methods = ['get','post'])
 def login():
     if request.method == 'get':
@@ -17,13 +32,7 @@ def login():
     if not (login or password):
         return render_template('lab5/login.html', error = 'Заполните все поля!')
 
-    conn = psycopg2.connect(
-        host = '127.0.0.1',
-        database = 'antonov_database',
-        user = 'antonov_database',
-        password = '123'
-    )
-    cur = conn.cursor(cursor_factory= RealDictCursor)
+    conn, cur = db_coonect()
     cur.execute("SELECT login, password FROM users WHERE login=%s;", (login,))
     user = cur.fetchone()
     if not user:
@@ -32,13 +41,11 @@ def login():
         return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
     
     if user['password'] != password:
-        cur.close()
-        conn.close()
+        db_close(conn,cur)
         return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
 
     session['login'] = login
-    cur.close()
-    conn.close()
+    db_close(conn,cur)
     return render_template('lab5/success_login.html', login=login)
 
 
@@ -63,22 +70,15 @@ def register():
     if not (login or password):
         return render_template('lab5/register.html', error = 'Заполните все поля!')
     
-    conn = psycopg2.connect(
-        host = '127.0.0.1',
-        database = 'antonov_database',
-        user = 'antonov_database',
-        password = '123'
-    )
+    conn, cur = db_coonect()
+
     cur = conn.cursor()
     cur.execute(f"select login from users where login='{login}';")
     if cur.fetchone():
-        cur.close()
-        conn.close()
+        db_close(conn,cur)
         return render_template('lab5/register.html', error='Такой пользователь уже существует')
     cur.execute(f"insert into users (login, password) values ('{login}', '{password}');")
-    conn.commit()
-    cur.close()
-    conn.close()
+    db_close(conn,cur)
     return render_template('lab5/success.html', login=login)
 
 
