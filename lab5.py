@@ -114,7 +114,6 @@ def list():
     
     conn, cur = db_coonect()
     
-    # Получаем id пользователя по его логину
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
     else:
@@ -128,13 +127,11 @@ def list():
 
     user_id = user['id']
     
-    # Получаем статьи пользователя
     cur.execute("SELECT * FROM articles WHERE user_id = ?", (user_id,))
     articles = cur.fetchall()
 
     db_close(conn, cur)
 
-    # Если нет статей, выводим сообщение
     if not articles:
         return render_template('lab5/articles.html', message='У вас нет ни одной статьи.')
 
@@ -202,7 +199,6 @@ def edit(article_id):
         return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
 
     if request.method == 'GET':
-        # Получаем статью для редактирования
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
         else:
@@ -214,20 +210,16 @@ def edit(article_id):
         if not article:
             return render_template('lab5/create_article.html', error='Статья не найдена или вы не авторизованы для её редактирования')
 
-        # Отправляем статью в шаблон для редактирования
+
         return render_template('lab5/create_article.html', article=article)
 
-    # Получаем данные из формы
     title = request.form.get('title')
     article_text = request.form.get('article_text')
-    is_public = request.form.get('is_public') == 'on'  # Если checkbox "is_public" установлен, то он равен True
-
-    # Валидация формы
+    is_public = request.form.get('is_public') == 'on'  
     if not (title and article_text):
         return render_template('lab5/create_article.html', error='Заполните все поля', 
                                article={'id': article_id, 'title': title, 'article_text': article_text, 'is_public': is_public})
 
-    # Обновляем статью в базе данных
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("UPDATE articles SET title=%s, article_text=%s, is_public=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", 
                     (title, article_text, is_public, article_id, login))
@@ -237,7 +229,6 @@ def edit(article_id):
 
     db_close(conn, cur)
 
-    # Перенаправляем на список статей
     return redirect(url_for('lab5.list'))
 
 
@@ -251,7 +242,6 @@ def delete(article_id):
     if not conn or not cur:
         return render_template('lab5/articles.html', error='Ошибка подключения к базе данных')
 
-    # Получаем id пользователя
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
     else:
@@ -265,7 +255,6 @@ def delete(article_id):
 
     user_id = user['id']
 
-    # Проверяем, что статья принадлежит текущему пользователю
     cur.execute("SELECT id FROM articles WHERE id = ? AND user_id = ?", (article_id, user_id))
     article = cur.fetchone()
 
@@ -273,7 +262,6 @@ def delete(article_id):
         db_close(conn, cur)
         return render_template('lab5/articles.html', error="Статья не найдена или вы не авторизованы для её удаления")
 
-    # Удаляем статью из базы данных
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("DELETE FROM articles WHERE id = %s AND user_id = %s;", (article_id, user_id))
     else:
