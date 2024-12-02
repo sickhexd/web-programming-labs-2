@@ -206,7 +206,7 @@ def edit(article_id):
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
         else:
-            cur.execute("SELECT * FROM articles WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (article_id, login))
+            cur.execute("SELECT * FROM articles WHERE id=? AND user_id=(SELECT id FROM users WHERE login=?);", (article_id, login))
 
         article = cur.fetchone()
         db_close(conn, cur)
@@ -232,7 +232,7 @@ def edit(article_id):
         cur.execute("UPDATE articles SET title=%s, article_text=%s, is_public=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", 
                     (title, article_text, is_public, article_id, login))
     else:
-        cur.execute("UPDATE articles SET title=?, article_text=?, is_public=? WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", 
+        cur.execute("UPDATE articles SET title=?, article_text=?, is_public=? WHERE id=? AND user_id=(SELECT id FROM users WHERE login=?);", 
                     (title, article_text, is_public, article_id, login))
 
     db_close(conn, cur)
