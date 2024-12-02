@@ -202,6 +202,7 @@ def edit(article_id):
         return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
 
     if request.method == 'GET':
+        # Получаем статью для редактирования
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
         else:
@@ -211,22 +212,32 @@ def edit(article_id):
         db_close(conn, cur)
 
         if not article:
-            return render_template('lab5/create_article.html', error='Статья не найдена')
+            return render_template('lab5/create_article.html', error='Статья не найдена или вы не авторизованы для её редактирования')
 
+        # Отправляем статью в шаблон для редактирования
         return render_template('lab5/create_article.html', article=article)
 
+    # Получаем данные из формы
     title = request.form.get('title')
     article_text = request.form.get('article_text')
-    is_public = request.form.get('is_public') == 'on'
+    is_public = request.form.get('is_public') == 'on'  # Если checkbox "is_public" установлен, то он равен True
 
+    # Валидация формы
     if not (title and article_text):
-        return render_template('lab5/create_article.html', error='Заполните все поля', article={'id': article_id, 'title': title, 'article_text': article_text, 'is_public': is_public})
+        return render_template('lab5/create_article.html', error='Заполните все поля', 
+                               article={'id': article_id, 'title': title, 'article_text': article_text, 'is_public': is_public})
 
+    # Обновляем статью в базе данных
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("UPDATE articles SET title=%s, article_text=%s, is_public=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (title, article_text, is_public, article_id, login))
+        cur.execute("UPDATE articles SET title=%s, article_text=%s, is_public=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", 
+                    (title, article_text, is_public, article_id, login))
     else:
-        cur.execute("UPDATE articles SET title=?, article_text=?, is_public=? WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (title, article_text, is_public, article_id, login))
+        cur.execute("UPDATE articles SET title=?, article_text=?, is_public=? WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", 
+                    (title, article_text, is_public, article_id, login))
 
     db_close(conn, cur)
+
+    # Перенаправляем на список статей
     return redirect(url_for('lab5.list'))
+
 
