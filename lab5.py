@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session, current_app
+from flask import Blueprint, render_template, request, redirect, session, current_app, url_for
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -191,64 +191,42 @@ def logout():
     return redirect('/lab5/login')
 
 
-@lab5.route('/lab5/edit/<int:article_id>', methods=['get', 'post'])
+@lab5.route('/lab5/edit/<int:article_id>/', methods=['GET', 'POST'])
 def edit(article_id):
     login = session.get('login')
-    
     if not login:
-        return redirect('/lab5/login')
+        return redirect(url_for('lab5.login'))
 
     conn, cur = db_coonect()
-    
-    try:
-        # Получаем id пользователя
+    if not conn or not cur:
+        return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
+
+    if request.method == 'GET':
         if current_app.config['DB_TYPE'] == 'postgres':
-            cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
+            cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
         else:
-            cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+            cur.execute("SELECT * FROM articles WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (article_id, login))
 
-        user = cur.fetchone()
-
-        if not user:
-            db_close(conn, cur)
-            return redirect('/lab5/login')
-
-        user_id = user['id']
-
-        # Получаем статью по article_id
-        cur.execute("SELECT * FROM articles WHERE id = ? AND user_id = ?", (article_id, user_id))
         article = cur.fetchone()
+        db_close(conn, cur)
 
         if not article:
-            db_close(conn, cur)
-            return render_template('lab5/articles.html', error="Статья не найдена или вы не авторизованы для её редактирования.")
-        
-        # Если метод запроса POST, обновляем статью
-        if request.method == 'POST':
-            title = request.form.get('title')
-            article_text = request.form.get('article_text')
+            return render_template('lab5/create_article.html', error='Статья не найдена')
 
-            # Валидация: проверка, что поля не пустые
-            if not title or not article_text:
-                return render_template('lab5/edit_article.html', error='Заполните все поля: тема и текст статьи.', article=article)
+        return render_template('lab5/create_article.html', article=article)
 
-            # Обновляем статью в базе данных
-            if current_app.config['DB_TYPE'] == 'postgres':
-                cur.execute("UPDATE articles SET title = %s, article_text = %s WHERE id = %s AND user_id = %s;", 
-                            (title, article_text, article_id, user_id))
-            else:
-                cur.execute("UPDATE articles SET title = ?, article_text = ? WHERE id = ? AND user_id = ?;", 
-                            (title, article_text, article_id, user_id))
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+    is_public = request.form.get('is_public') == 'on'
 
-            db_close(conn, cur)
-            return redirect('/lab5/list')
+    if not (title and article_text):
+        return render_template('lab5/create_article.html', error='Заполните все поля', article={'id': article_id, 'title': title, 'article_text': article_text, 'is_public': is_public})
 
-        # Если метод запроса GET, отображаем форму с данными статьи
-        return render_template('lab5/edit_article.html', article=article)
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE articles SET title=%s, article_text=%s, is_public=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (title, article_text, is_public, article_id, login))
+    else:
+        cur.execute("UPDATE articles SET title=?, article_text=?, is_public=? WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (title, article_text, is_public, article_id, login))
 
-    except Exception as e:
-        # Логируем ошибки
-        print(f"Ошибка при редактировании статьи: {e}")
-        db_close(conn, cur)
-        return render_template('lab5/articles.html', error="Произошла ошибка при редактировании статьи.")
+    db_close(conn, cur)
+    return redirect(url_for('lab5.list'))
 
