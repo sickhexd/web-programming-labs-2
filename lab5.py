@@ -241,3 +241,43 @@ def edit(article_id):
     return redirect(url_for('lab5.list'))
 
 
+@lab5.route('/lab5/delete/<int:article_id>/', methods=['POST'])
+def delete(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect(url_for('lab5.login'))
+
+    conn, cur = db_coonect()
+    if not conn or not cur:
+        return render_template('lab5/articles.html', error='Ошибка подключения к базе данных')
+
+    # Получаем id пользователя
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+
+    user = cur.fetchone()
+
+    if not user:
+        db_close(conn, cur)
+        return redirect(url_for('lab5.login'))
+
+    user_id = user['id']
+
+    # Проверяем, что статья принадлежит текущему пользователю
+    cur.execute("SELECT id FROM articles WHERE id = ? AND user_id = ?", (article_id, user_id))
+    article = cur.fetchone()
+
+    if not article:
+        db_close(conn, cur)
+        return render_template('lab5/articles.html', error="Статья не найдена или вы не авторизованы для её удаления")
+
+    # Удаляем статью из базы данных
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("DELETE FROM articles WHERE id = %s AND user_id = %s;", (article_id, user_id))
+    else:
+        cur.execute("DELETE FROM articles WHERE id = ? AND user_id = ?;", (article_id, user_id))
+
+    db_close(conn, cur)
+    return redirect(url_for('lab5.list'))
