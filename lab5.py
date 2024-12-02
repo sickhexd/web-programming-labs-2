@@ -14,19 +14,19 @@ def lab():
 def db_coonect():
     if current_app.config['DB_TYPE'] == 'postgres':
         conn = psycopg2.connect(
-            host = '127.0.0.1',
-            database = 'antonov_database',
-            user = 'antonov_database',
-            password = '123'
+            host='127.0.0.1',
+            database='antonov_database',
+            user='antonov_database',
+            password='123'
         )
-        cur = conn.cursor(cursor_factory= RealDictCursor)
+        cur = conn.cursor(cursor_factory=RealDictCursor)
     else:
         dir_path = path.dirname(path.realpath(__file__))
         db_path = path.join(dir_path, 'database.db')
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-    return conn,cur
+    return conn, cur
 
 def db_close(conn, cur):
     conn.commit()
@@ -38,34 +38,30 @@ def db_close(conn, cur):
 
 
 
-@lab5.route('/lab5/login', methods = ['get','post'])
+@lab5.route('/lab5/login', methods=['get', 'post'])
 def login():
     if request.method == 'get':
         return render_template('lab5/login.html')
+
     login = request.form.get('login')
     password = request.form.get('password')
 
-    if not (login or password):
-        return render_template('lab5/login.html', error = 'Заполните все поля!')
+    if not (login and password):
+        return render_template('lab5/login.html', error='Заполните все поля!')
 
     conn, cur = db_coonect()
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute(f"select login from users where login=%s;", (login))
+        cur.execute("SELECT login, password FROM users WHERE login = %s;", (login,))
     else:
-        cur.execute("SELECT login FROM users WHERE login = ?", (login,))
+        cur.execute("SELECT login, password FROM users WHERE login = ?", (login,))
 
     user = cur.fetchone()
-    if not user:
-        cur.close()
-        conn.close()
-        return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
-    
-    if not check_password_hash(user['password'], password):
-        db_close(conn,cur)
+    if not user or not check_password_hash(user['password'], password):
+        db_close(conn, cur)
         return render_template('lab5/login.html', error='Логин и/или пароль не верны!')
 
     session['login'] = login
-    db_close(conn,cur)
+    db_close(conn, cur)
     return render_template('lab5/success_login.html', login=login)
 
 
