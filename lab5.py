@@ -111,13 +111,35 @@ def list():
     login = session.get('login')
     if not login:
         return redirect('/lab5/login')
+    
     conn, cur = db_coonect()
-    cur.execute(f"select id from users where login='{login}';")
-    user_id = cur.fetchone()['id']
-    cur.execute(f"select * from articles where user_id='{user_id}';")
+    
+    # Получаем id пользователя по его логину
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
+    else:
+        cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+
+    user = cur.fetchone()
+
+    if not user:
+        db_close(conn, cur)
+        return render_template('lab5/articles.html', error='Пользователь не найден')
+
+    user_id = user['id']
+    
+    # Получаем статьи пользователя
+    cur.execute("SELECT * FROM articles WHERE user_id = ?", (user_id,))
     articles = cur.fetchall()
-    db_close(conn,cur)
+
+    db_close(conn, cur)
+
+    # Если нет статей, выводим сообщение
+    if not articles:
+        return render_template('lab5/articles.html', message='У вас нет ни одной статьи.')
+
     return render_template('lab5/articles.html', articles=articles)
+
 
 @lab5.route('/lab5/create', methods=['get', 'post'])
 def create():
@@ -131,9 +153,13 @@ def create():
     title = request.form.get('title')
     article_text = request.form.get('article_text')
 
+
+    if not title or not article_text:
+        return render_template('lab5/create_article.html', error='Заполните все поля: тема и текст статьи.')
+    
     conn, cur = db_coonect()
 
-    # Запрос для получения id пользователя
+
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("SELECT id FROM users WHERE login = %s;", (login,))
     else:
@@ -147,7 +173,7 @@ def create():
 
     user_id = user['id']
 
-    # Вставка статьи с user_id
+
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("INSERT INTO articles (user_id, title, article_text) VALUES (%s, %s, %s);", 
                     (user_id, title, article_text))
