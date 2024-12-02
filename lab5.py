@@ -131,7 +131,7 @@ def create():
     title = request.form.get('title')
     article_text = request.form.get('article_text')
 
-    conn, cur = db_connect()
+    conn, cur = db_coonect()
 
     # Запрос для получения id пользователя
     if current_app.config['DB_TYPE'] == 'postgres':
