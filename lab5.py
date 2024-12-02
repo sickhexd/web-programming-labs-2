@@ -133,9 +133,9 @@ def create():
     conn, cur = db_coonect()
 
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute(f"select login from users where login=%s;", (login))
+        cur.execute("SELECT login, password FROM users WHERE login = %s;", (login,))
     else:
-        cur.execute("SELECT login FROM users WHERE login = ?", (login,))
+        cur.execute("SELECT login, password FROM users WHERE login = ?", (login,))
 
     user_id = cur.fetchone()['id']
 
