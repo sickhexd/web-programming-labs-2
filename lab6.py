@@ -50,7 +50,6 @@ def api():
                 'result': 'success',
                 'id': id
             }
-
     return {
         'jsonrpc': '2.0',
         'error': {
