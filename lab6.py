@@ -3,8 +3,9 @@ from flask import Blueprint, render_template, request, redirect, session, curren
 lab6 = Blueprint('lab6', __name__)
 
 offices=[]
-for i in range(1,11):
-    offices.append({'number': i, 'tenant': ''})
+offices = []
+for i in range(1, 11):
+    offices.append({'number': i, 'tenant': '', 'price': 1000})
 
 
 @lab6.route('/lab6/')
