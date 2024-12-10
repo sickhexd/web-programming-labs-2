@@ -23,13 +23,17 @@
             .then(function (data) {
                 const office_list = data.result;
                 const ul = document.getElementById('office-list');
-                ul.innerHTML = ''; 
+                ul.innerHTML = ''; // Очищаем список перед добавлением новых данных
     
-                let totalPrice = 0; 
+                let totalPrice = 0; // Переменная для хранения общей стоимости выбранных офисов
     
                 for (let i = 0; i < office_list.length; i++) {
                     const office = office_list[i];
-                    totalPrice += office.price; 
+    
+                    // Если офис арендован, добавляем его стоимость к общей сумме
+                    if (office.tenant) {
+                        totalPrice += office.price;
+                    }
     
                     const li = document.createElement('li');
                     li.innerText = `Офис ${office.number}: ${office.tenant || 'свободен'}, Цена: ${office.price} руб.`;
@@ -39,7 +43,7 @@
                         bookingButton.innerText = 'Забронировать';
                         bookingButton.onclick = function () { booking(office.number); };
                         li.appendChild(bookingButton);
-                    } else if (office.tenant === '{{ session["login"] }}') { 
+                    } else if (office.tenant === '{{ session["login"] }}') { // Если офис арендован текущим пользователем
                         const cancelButton = document.createElement('button');
                         cancelButton.innerText = 'Освободить';
                         cancelButton.onclick = function () { cancelBooking(office.number); };
@@ -49,11 +53,12 @@
                     ul.appendChild(li);
                 }
     
-                
+                // Отображаем общую сумму арендованных офисов
                 const totalPriceElement = document.getElementById('total-price');
-                totalPriceElement.innerText = `Общая сумма стоимости всех офисов: ${totalPrice} руб.`;
+                totalPriceElement.innerText = `Общая сумма арендованных офисов: ${totalPrice} руб.`;
             });
     }
+    
     
     
 
