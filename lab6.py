@@ -46,7 +46,7 @@ def api():
                         },
                         'id': id
                     }
-                office['tenant'] = login  # Устанавливаем арендатора
+                office['tenant'] = login  
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
@@ -82,7 +82,7 @@ def api():
                         },
                         'id': id
                     }
-                office['tenant'] = ''  # Освобождаем офис
+                office['tenant'] = ''  
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',

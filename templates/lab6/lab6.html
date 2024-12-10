@@ -5,46 +5,57 @@
 
 {% block script %}
 <script>
-    function getOfficeList(){
+    function getOfficeList() {
         const url = '/lab6/json-rpc-api/';
         const json = {
             'jsonrpc': '2.0',
             'method': 'info',
-            'id': Math.round(Math.random()*1000)
+            'id': Math.round(Math.random() * 1000)
         };
         fetch(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(json)
         })
-        .then(function(response){
-            return response.json();
-        })
-        .then(function(data){
-            const office_list = data.result;
-            const ul = document.getElementById('office-list');
-            ul.innerHTML = '';  // Очищаем список перед добавлением новых данных
-            for (let i = 0; i < office_list.length; i++) {
-                const office = office_list[i];
-                const li = document.createElement('li');
-                li.innerText = `${office.number}: ${office.tenant || 'свободен'}`;
-
-                if (!office.tenant) {  // Если офис свободен, показываем кнопку для бронирования
-                    const bookingButton = document.createElement('button');
-                    bookingButton.innerText = 'Зарегистрироваться';
-                    bookingButton.onclick = function() { booking(office.number); };
-                    li.appendChild(bookingButton);
-                } else if (office.tenant === '{{ session["login"] }}') {  // Если офис забронирован текущим пользователем, показываем кнопку для снятия аренды
-                    const cancelButton = document.createElement('button');
-                    cancelButton.innerText = 'Освободить';
-                    cancelButton.onclick = function() { cancelBooking(office.number); };
-                    li.appendChild(cancelButton);
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const office_list = data.result;
+                const ul = document.getElementById('office-list');
+                ul.innerHTML = ''; 
+    
+                let totalPrice = 0; 
+    
+                for (let i = 0; i < office_list.length; i++) {
+                    const office = office_list[i];
+                    totalPrice += office.price; 
+    
+                    const li = document.createElement('li');
+                    li.innerText = `Офис ${office.number}: ${office.tenant || 'свободен'}, Цена: ${office.price} руб.`;
+    
+                    if (!office.tenant) { // Если офис свободен
+                        const bookingButton = document.createElement('button');
+                        bookingButton.innerText = 'Забронировать';
+                        bookingButton.onclick = function () { booking(office.number); };
+                        li.appendChild(bookingButton);
+                    } else if (office.tenant === '{{ session["login"] }}') { 
+                        const cancelButton = document.createElement('button');
+                        cancelButton.innerText = 'Освободить';
+                        cancelButton.onclick = function () { cancelBooking(office.number); };
+                        li.appendChild(cancelButton);
+                    }
+    
+                    ul.appendChild(li);
                 }
-
-                ul.appendChild(li);
-            }
-        });
+    
+                
+                const totalPriceElement = document.getElementById('total-price');
+                totalPriceElement.innerText = `Общая сумма стоимости всех офисов: ${totalPrice} руб.`;
+            });
     }
+    
+    
 
     function booking(officeNumber) {
         const url = '/lab6/json-rpc-api';
@@ -78,7 +89,7 @@
                         alert('Неизвестная ошибка');
                 }
             } else {
-                getOfficeList();  // Обновляем список после бронирования
+                getOfficeList();  
             }
         });
     }
@@ -118,13 +129,13 @@
                         alert('Неизвестная ошибка');
                 }
             } else {
-                getOfficeList();  // Обновляем список после снятия аренды
+                getOfficeList();  
             }
         });
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        getOfficeList();  // Загружаем список офисов при загрузке страницы
+        getOfficeList();  
     });
 </script>
 {% endblock %}
@@ -132,4 +143,5 @@
 {% block main %}
     <h1>Список кабинетов</h1>
     <ul id="office-list"></ul>
+    <p id="total-price">Общая сумма стоимости всех офисов: 0 руб.</p>
 {% endblock %}
