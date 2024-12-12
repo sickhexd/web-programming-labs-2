@@ -59,3 +59,12 @@ def add_film():
     films.append(film)
     return jsonify({"id": len(films) - 1}), 201
 
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
+def update_film(id):
+    if id >= len(films):
+        return "Такого фильма нет!", 404
+    film = request.get_json()
+    if 'description' in film and film['description'] == '':
+        return {'error': 'Заполните описание'}, 400
+    films[id].update(film)
+    return jsonify(films[id])

@@ -90,8 +90,16 @@ function sendFilm(){
         body: JSON.stringify(film)
     })
     .then(function() {
-        fillFilmList();
-        hideModal();
+        if(resp.ok){
+            fillFilmList();
+            hideModal();
+            return {}
+        }
+        return resp.json()
+    })
+    .then(function(errors){
+        if(errors.description)
+            document.getElementById('description-error').innerText = errors.description;
     });
 }
 
