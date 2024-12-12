@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, current_app, url_for
-
+import jsonify
 lab7 = Blueprint('lab7', __name__)
 
 @lab7.route('/lab7/')
@@ -53,3 +53,8 @@ def put_film(id):
         return "Такого фильма нет!", 404
     
 
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['POST'])
+def add_film():
+    film = request.get_json()
+    films.append(film)
+    return jsonify({id: len(films) - 1}), 201
