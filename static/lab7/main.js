@@ -72,36 +72,52 @@ function addFilm(){
     showModal();
 }
 
-function sendFilm(){
+function sendFilm() {
     const id = document.getElementById('id').value;
     const film = {
         title: document.getElementById('title').value,
         title_ru: document.getElementById('title-ru').value,
         year: document.getElementById('year').value,
         description: document.getElementById('description').value
-    }
+    };
 
-    const url = `/lab7/rest-api/films/${id}`;
-    const method = id === '' ? 'POST': 'PUT';
+    const url = id === '' ? '/lab7/rest-api/films/' : `/lab7/rest-api/films/${id}`;
+    const method = id === '' ? 'POST' : 'PUT';
 
     fetch(url, {
         method: method,
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film)
     })
-    .then(function() {
-        if(resp.ok){
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(obj => {
+        if (obj.status === 200 || obj.status === 201) {
             fillFilmList();
             hideModal();
-            return {}
+        } else {
+            if (obj.body.error) {
+                document.getElementById('description-error').innerText = obj.body.error;
+            }
         }
-        return resp.json()
     })
-    .then(function(errors){
-        if(errors.description)
-            document.getElementById('description-error').innerText = errors.description;
-    });
+    .catch(error => console.error('Error:', error));
 }
+
+function editFilm(id) {
+    fetch(`/lab7/rest-api/films/${id}`)
+    .then(response => response.json())
+    .then(film => {
+        document.getElementById('id').value = id;
+        document.getElementById('title').value = film.title;
+        document.getElementById('title-ru').value = film.title_ru;
+        document.getElementById('year').value = film.year;
+        document.getElementById('description').value = film.description;
+        showModal();
+    })
+    .catch(error => console.error('Error fetching the film:', error));
+}
+
+
 
 function editFilm(id){
     fetch(`/lab7/rest-api/films/${id}`)
