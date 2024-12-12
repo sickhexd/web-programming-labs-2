@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, session, current_app, url_for
-import jsonify
+from flask import Blueprint, render_template, request, redirect, session, current_app, url_for, jsonify
 lab7 = Blueprint('lab7', __name__)
 
 @lab7.route('/lab7/')
