@@ -6,20 +6,66 @@
 {% block script %}
 <script src="{{ url_for('static', filename='lab7/main.js')}}"></script>
 <style>
-    .modal{
+    body {
+        font-family: Arial, sans-serif;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .modal {
         display: none;
-        z-index: 100;
-        box-shadow: 3px 3px 5px black;
-        background: white;
-        width: 400px;
+        position: fixed;
+        z-index: 1000;
         left: 50%;
-        top: 220px;
-        margin-left: -200px;
-        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: white;
         padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
     }
     .error-message {
         color: red;
+        font-size: 0.85em;
+    }
+    button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    input[type="text"], input[type="number"], textarea {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
     }
 </style>
 {%endblock%}
