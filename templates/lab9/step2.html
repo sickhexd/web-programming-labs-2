@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 9{% endblock %}
+
+{% block main %}
+    <h1>Привет, {{ username }}! Сколько тебе лет?</h1>
+    <form method="POST">
+        <input type="number" name="age" required>
+        <button type="submit">Далее</button>
+    </form>
+{% endblock %}

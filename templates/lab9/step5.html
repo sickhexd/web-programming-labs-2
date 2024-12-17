@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 9{% endblock %}
+
+{% block main %}
+    <h1>Вы выбрали {{ preference }}. Что из этого вам нравится?</h1>
+    <form method="POST">
+        {% if preference == 'tasty' %}
+            <label><input type="radio" name="subpreference" value="sweet" required> Сладкое</label><br>
+            <label><input type="radio" name="subpreference" value="savory" required> Сытное</label><br>
+        {% else %}
+            <label><input type="radio" name="subpreference" value="flowers" required> Цветы</label><br>
+            <label><input type="radio" name="subpreference" value="art" required> Искусство</label><br>
+        {% endif %}
+        <button type="submit">Далее</button>
+    </form>
+{% endblock %}
