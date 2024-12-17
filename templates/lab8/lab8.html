@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 8{% endblock %}
+
+{% block main %}
+
+    <h1>База знаний</h1>
+    <div style="background-color: rgb(132, 132, 245); padding:5px; display:flex; align-items:center; justify-content:center">
+        <a class="button" href="/lab8/login">Логин</a></li>
+        <a class="button" href="/lab8/register">Регистрация</a></li>
+        <a class="button" href="/lab8/list">Список статей</a></li>
+        <a class="button" href="/lab8/create">Создать статью</a></li>
+        {% if login %}
+            {{login}}
+            <a href="{{ url_for('lab8.logout') }}">Выход</a>
+        {%else%}
+            anonymous
+        {%endif%}
+    </div>
+    
+{% endblock %}
