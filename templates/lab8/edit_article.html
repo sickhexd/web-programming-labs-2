@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block lab %}Редактирование статьи{% endblock %}
+
+{% block main %}
+    <h1>Редактирование статьи</h1>
+    <form method="POST">
+        <div>
+            <label for="title">Название статьи:</label>
+            <input type="text" id="title" name="title" value="{{ article.title }}" maxlength="50" required>
+        </div>
+        <div>
+            <label for="article_text">Текст статьи:</label>
+            <textarea id="article_text" name="article_text" rows="5" required>{{ article.article_text }}</textarea>
+        </div>
+        <button type="submit">Сохранить изменения</button>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </form>
+    <a href="{{ url_for('lab8.article_list') }}">Назад к списку статей</a>
+{% endblock %}

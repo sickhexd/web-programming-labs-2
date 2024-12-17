@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block lab %}Удаление статьи{% endblock %}
+
+{% block main %}
+    <h1>Вы уверены, что хотите удалить статью "{{ article.title }}"?</h1>
+    
+    <form method="POST">
+        <!-- CSRF токен, если используется Flask-WTF или CSRF защита -->
+        {{ form.hidden_tag() }}
+        <button type="submit">Удалить</button>
+    </form>
+
+    <a href="{{ url_for('lab8.article_list') }}">Отменить</a>
+{% endblock %}
