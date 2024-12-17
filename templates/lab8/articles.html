@@ -3,7 +3,7 @@
 {% block lab %}Лабораторная работа 8{% endblock %}
 
 {% block main %}
-  <h1>Список статей</h1>
+  <h1>Список ваших статей</h1>
 
   {% if articles %}
     <ul>
@@ -16,8 +16,7 @@
           <!-- Форма для удаления статьи -->
           <form action="{{ url_for('lab8.delete_article', article_id=article.id) }}" method="POST" style="display:inline;">
             <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту статью?')" class="btn btn-danger">Удалить</button>
-        </form>
-        
+          </form>
         </li>
       {% endfor %}
     </ul>

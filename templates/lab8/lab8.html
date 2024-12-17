@@ -11,12 +11,12 @@
         <a class="button" href="/lab8/register">Регистрация</a></li>
         <a class="button" href="/lab8/articles">Список статей</a></li>
         <a class="button" href="/lab8/create">Создать статью</a></li>
-        {% if login %}
-            {{login}}
+        {% if current_user.is_authenticated %}
+            <p>{{ current_user.username }}</p>  <!-- или другое свойство текущего пользователя -->
             <a href="{{ url_for('lab8.logout') }}">Выход</a>
-        {%else%}
-            anonymous
-        {%endif%}
+        {% else %}
+            <p>anonymous</p>
+        {% endif %}
     </div>
     
 {% endblock %}

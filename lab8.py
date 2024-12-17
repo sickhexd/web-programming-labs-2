@@ -59,12 +59,10 @@ def login():
 
     return render_template('lab8/login.html', error='Ошибка входа: логин и/или пароль неверны')
 
-# Список статей
 @lab8.route('/lab8/articles')
 @login_required
 def article_list():
-    # Получаем список статей из базы данных
-    articles_list = articles.query.all()
+    articles_list = articles.query.filter_by(user_id=current_user.id).all()
     return render_template('lab8/articles.html', articles=articles_list)
 
 # Страница для создания статьи
