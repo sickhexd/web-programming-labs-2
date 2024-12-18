@@ -6,12 +6,12 @@ from db.models import users, articles
 
 lab8 = Blueprint('lab8', __name__)
 
-# Главная страница
+
 @lab8.route('/lab8/')
 def lab():
     return render_template('lab8/lab8.html')
 
-# Регистрация с автоматическим логином
+
 @lab8.route('/lab8/register/', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -23,22 +23,22 @@ def register():
     if not login_form or not password_from:
         return render_template('lab8/register.html', error='Имя пользователя и пароль не могут быть пустыми.')
 
-    # Проверка на существование логина
+
     login_exists = users.query.filter_by(login=login_form).first()
     if login_exists:
         return render_template('lab8/register.html', error='Такой пользователь уже существует')
 
-    # Хеширование пароля
+
     password_hash = generate_password_hash(password_from)
     new_user = users(login=login_form, password=password_hash)
     db.session.add(new_user)
     db.session.commit()
 
-    # Автоматический вход
-    login_user(new_user, remember=False)  # автоматически залогиним пользователя
+
+    login_user(new_user, remember=False) 
     return redirect('/lab8/')
 
-# Страница логина с "запомнить меня"
+
 @lab8.route('/lab8/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -46,7 +46,7 @@ def login():
 
     login_form = request.form.get('login')
     password_from = request.form.get('password')
-    remember_me = 'remember_me' in request.form  # проверка галочки "Запомнить меня"
+    remember_me = 'remember_me' in request.form  
 
     if not login_form or not password_from:
         return render_template('lab8/login.html', error='Логин и пароль не могут быть пустыми.')
@@ -65,7 +65,7 @@ def article_list():
     articles_list = articles.query.filter_by(user_id=current_user.id).all()
     return render_template('lab8/articles.html', articles=articles_list)
 
-# Страница для создания статьи
+
 @lab8.route('/lab8/create', methods=['GET', 'POST'])
 @login_required
 def create_article():
@@ -91,7 +91,7 @@ def create_article():
 def edit_article(article_id):
     article = articles.query.get_or_404(article_id)
 
-    # Проверка, что текущий пользователь является автором статьи
+
     if article.user_id != current_user.id:
         flash('Вы не можете редактировать чужую статью.', 'error')
         return redirect(url_for('lab8.article_list'))
@@ -112,13 +112,12 @@ def edit_article(article_id):
     flash('Статья успешно отредактирована!', 'success')
     return redirect(url_for('lab8.article_list'))
 
-# Удаление статьи
+
 @lab8.route('/lab8/delete/<int:article_id>', methods=['POST'])
 @login_required
 def delete_article(article_id):
     article = articles.query.get_or_404(article_id)
 
-    # Проверка, что текущий пользователь является автором статьи
     if article.user_id != current_user.id:
         flash('Вы не можете удалить чужую статью.', 'error')
         return redirect(url_for('lab8.article_list'))
@@ -130,9 +129,6 @@ def delete_article(article_id):
     return redirect(url_for('lab8.article_list'))
 
 
-
-
-# Логаут
 @lab8.route('/lab8/logout')
 @login_required
 def logout():
